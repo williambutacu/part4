@@ -10,4 +10,10 @@ const totalLikes = (blogs)=>{
     
 }
 
-module.exports= {dummy, totalLikes}
+const favoriteBlog = (blogs)=>{
+    
+reducer= (accumulator,currentValue) => accumulator.likes > currentValue.likes ? accumulator: currentValue
+return blogs.reduce(reducer)
+}
+
+module.exports= {dummy, totalLikes, favoriteBlog}

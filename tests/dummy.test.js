@@ -85,3 +85,8 @@ describe("total likes", ()=>{
         expect(result).toBe(0)
     })
 })
+
+test ("favorite blog works", ()=>{
+    const result = listhelper.favoriteBlog(blogs)
+    expect(result).toEqual(blogs[2])
+})
