@@ -1,3 +1,5 @@
+const _ =require("lodash")
+
 const dummy = (blogs)=>{
     return 1
 }
@@ -16,4 +18,35 @@ reducer= (accumulator,currentValue) => accumulator.likes > currentValue.likes ? 
 return blogs.reduce(reducer)
 }
 
-module.exports= {dummy, totalLikes, favoriteBlog}
+const mostBlogs = (blogs) =>{
+    const result=
+    _(blogs)
+        .countBy("author")
+        .map((obj, key)=>
+        ({
+            "author": key,
+            "blogs": obj
+        }))
+        .maxBy("blogs")
+    
+    
+    
+    return result
+    
+}
+
+const mostLikes = (blogs) =>{
+    const result=
+    _(blogs)
+        .groupBy("author")
+        .map((obj, key)=>{
+            
+            return ({
+            "author": key,
+            "likes": _.sumBy(obj, "likes")
+        })})
+        .maxBy("likes")
+return result
+}
+
+module.exports= {dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes}

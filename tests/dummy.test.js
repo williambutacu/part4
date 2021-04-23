@@ -90,3 +90,13 @@ test ("favorite blog works", ()=>{
     const result = listhelper.favoriteBlog(blogs)
     expect(result).toEqual(blogs[2])
 })
+
+test.only("mostBlogger", ()=>{
+    const result = listhelper.mostBlogs(blogs)
+    expect(result).toEqual ( {author: "Robert C. Martin", blogs: 3})
+})
+
+test("mostLike", ()=>{
+    const result = listhelper.mostLikes(blogs)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+})

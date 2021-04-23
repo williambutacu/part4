@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title":"Luceafarul",
-    "author":"Mihai Eminescu",
+    "title":"Owww",
+    "author":"Abracadabra",
     "url":"google.com",
     "likes":"5"
 }
