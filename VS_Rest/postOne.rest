@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title":"Owww",
-    "author":"Abracadabra",
-    "url":"google.com",
+    "title":"fifth test",
+    "author":"williams",
+    "url":"lalilulilo.co.uk",
     "likes":"5"
 }
