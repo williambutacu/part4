@@ -1,8 +1,20 @@
 const mongoose = require("mongoose")
 const supertest = require("supertest")
 const app = require("../app")
+const Blog = require("../models/blog")
+const listhelper = require("../utils/list_helper")
 
 const api = supertest(app)
+
+beforeEach( async()=>{
+    await Blog.deleteMany({})
+
+    let blogObject = new Blog(listhelper.initialBlogs[0])
+    await blogObject.save()
+
+    blogObject = new Blog(listhelper.initialBlogs[1])
+    await blogObject.save()
+})
 
 test("I can get the notes I want", async() =>{
     await api
@@ -11,7 +23,7 @@ test("I can get the notes I want", async() =>{
         .expect('Content-Type', /application\/json/)
 })
 
-test.only("The unique identifier ID is defined right", async() =>{
+test("The unique identifier ID is defined right", async() =>{
     const blog = {
     title: "hallo",
     author: "NemTudom",
@@ -25,12 +37,88 @@ test.only("The unique identifier ID is defined right", async() =>{
         .expect(200)
 
     expect(awaitresponse.body.id).toBeDefined
-        
 
-    
 })
 
+test("making a POST request works fine", async()=>{
 
+    
+    const blogTest= {
+        title:"ugamaga",
+        author:"luli",
+        url:"luizi.com",
+        likes: 3
+    }
+
+     await api
+        .post("/api/blogs")
+        .send(blogTest)
+        .expect(200)
+
+    const blogsAtEnd = await listhelper.blogsInDB()
+    expect(blogsAtEnd).toHaveLength(listhelper.initialBlogs.length+1)
+
+    const content= blogsAtEnd.map(blog=>blog.title)
+    expect(content).toContain("ugamaga")    
+})
+
+test("if like property is missing, then we add 0", async()=>{
+    const blogTest= {
+        title:"ugamaga",
+        author:"luli",
+        url:"luizi.com"
+    }
+
+    const response =await api
+        .post("/api/blogs")
+        .send(blogTest)
+        .expect(200)
+
+    console.log(response.body)
+    expect(response.body.likes).toBeDefined
+})
+
+test("if title or url is missing, then we get error 400", async()=>{
+    const blogTest={
+        title:"yolo",
+        author:"lulilo",
+        likes:5
+    }
+
+    await api
+        .post("/api/blogs")
+        .send(blogTest)
+        .expect(400)       
+})
+
+test("deleting a blog works fine", async()=>{
+    const blogsAtStart = await listhelper.blogsInDB()
+    const blogToBeRemoved = blogsAtStart[0]
+    await api
+        .delete(`/api/blogs/${blogToBeRemoved.id}`)
+        .expect(204)
+
+    const blogsAtEnd = await listhelper.blogsInDB()
+    expect(blogsAtEnd.length).toBe(blogsAtStart.length-1)
+})
+
+test.only("updating a blog works fine", async()=>{
+    const blogsAtStart= await listhelper.blogsInDB()
+    const blogToBeUpdated = blogsAtStart[0]
+
+    const UpdatedBlog ={
+        title:"SSJVEGETA",
+        author:"luli",
+        url:"luizi.com",
+        likes: 3,
+        id: blogToBeUpdated.id
+    }
+
+    const response = await api
+        .put(`/api/blogs/${blogToBeUpdated.id}`)
+        .send(UpdatedBlog)
+    expect(response.body).toEqual(UpdatedBlog)
+})
 
 
 afterAll(()=> mongoose.connection.close())

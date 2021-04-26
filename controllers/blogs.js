@@ -9,7 +9,7 @@ blogsRouter.get("/", async (req,res)=>{
 
 })
 
-blogsRouter.get("/:id", async (req,res,next)=>{
+blogsRouter.get("/:id", async (req,res)=>{
 
    const blogfound= await Blog.findById(req.params.id)
    if (blogfound){
@@ -23,11 +23,31 @@ blogsRouter.get("/:id", async (req,res,next)=>{
   
 })
 
-blogsRouter.post("/",async (req,res,next)=>{
+blogsRouter.post("/",async (req,res)=>{
     const blog = new Blog(req.body)
-    const savedblog = await blog.save()
-    res.json(savedblog)
-    
+
+    if (blog.likes){
+        const savedblog = await blog.save()
+        res.json(savedblog)
+
+    }
+    else {
+        blog.likes=0
+        const savedblog= await blog.save()
+        res.json(savedblog)
+    }    
+})
+
+blogsRouter.delete("/:id", async(req,res)=>{
+    const blogToBeRemoved = await Blog.findByIdAndDelete(req.params.id)
+    res.status(204).end()
+})
+
+blogsRouter.put("/:id", async(req,res)=>{
+    const blog= req.body
+
+    const updatedBlog= await Blog.findByIdAndUpdate(req.params.id, blog, {new:true})
+    res.json(updatedBlog)
 })
 
 module.exports=blogsRouter
