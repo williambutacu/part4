@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhbGlsdWxpbG8iLCJpZCI6IjYwODk1ZjA3MjkwNjY3MzJkY2M0NTdlYyIsImlhdCI6MTYxOTYyMDgxMX0.dNqvipDDAXFjTIAUllXMRhoTBtKoFxsl08IXKMPu5Nc
+
+{
+    "title": "this blog is made with a token",
+    "author": "mofo",
+    "url": "youtube.com"
+}
