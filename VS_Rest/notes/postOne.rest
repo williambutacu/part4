@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+content-type: application/json
+
+{
+    "title":"the one and only mighty",
+    "author":"williams",
+    "url": "google.com",
+    "likes":"5",
+    "user": "60895f0729066732dcc457ec"
+}

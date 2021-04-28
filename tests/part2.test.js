@@ -75,7 +75,7 @@ test("if like property is missing, then we add 0", async()=>{
         .expect(200)
 
     console.log(response.body)
-    expect(response.body.likes).toBeDefined
+    expect(response.body.likes).toBeDefined()
 })
 
 test("if title or url is missing, then we get error 400", async()=>{
@@ -102,7 +102,7 @@ test("deleting a blog works fine", async()=>{
     expect(blogsAtEnd.length).toBe(blogsAtStart.length-1)
 })
 
-test.only("updating a blog works fine", async()=>{
+test("updating a blog works fine", async()=>{
     const blogsAtStart= await listhelper.blogsInDB()
     const blogToBeUpdated = blogsAtStart[0]
 
@@ -118,6 +118,24 @@ test.only("updating a blog works fine", async()=>{
         .put(`/api/blogs/${blogToBeUpdated.id}`)
         .send(UpdatedBlog)
     expect(response.body).toEqual(UpdatedBlog)
+})
+
+test.only("adding a blog with a user adds the blog to the user too", async()=>{
+    const blog=
+        {
+            title:"user-blog-test",
+            author:"williams",
+            url: "google.com",
+            likes:"5",
+            user: "60886d9c2843551f688e4a10"
+        }
+    
+    const response = await api
+        .post("/api/blogs")
+        .send(blog)
+        .expect(200)
+    
+
 })
 
 

@@ -1,8 +1,0 @@
-POST http://localhost:3003/api/blogs
-content-type: application/json
-
-{
-    "title":"fifth test",
-    "author":"williams",
-    "likes":"5"
-}
