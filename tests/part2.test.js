@@ -120,7 +120,50 @@ test("updating a blog works fine", async()=>{
     expect(response.body).toEqual(UpdatedBlog)
 })
 
-test.only("adding a blog with a user adds the blog to the user too", async()=>{
+test("adding a user works good in testing", async()=>{
+    const user ={
+        name:"Fiorentino",
+        username:"SSJVegeta",
+        password:"highfive"
+    }
+
+    await api
+        .post("/api/users")
+        .send(user)
+        .expect(200)
+})
+
+test("logging an user gives me the token I desire the most", async()=>{
+
+    const userToLogin={
+        username:"SSJVegeta",
+        password:"highfive"
+    }
+
+    const tokenToGet= await api
+        .post("/api/login")
+        .send(userToLogin)
+        .expect(200)
+    console.log(tokenToGet.body)
+})
+
+
+test.only("Posting a blog with a token works good", async()=>{
+    const token = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNTSlZlZ2V0YSIsImlkIjoiNjA4OWIzYzRiYmEwMGIxYjE0ODk5MGM1IiwiaWF0IjoxNjE5NjM3Mzc0fQ.ZzPT8hxohgB-Bp0x3b1Nq1oclrwiUpn6wpOeubeDb6I"
+    const blogToTest={
+        title:"Im making this blog with a token in JEST",
+        author:"SSJVegeta",
+        url:"vanced.com"
+    }
+
+    await api
+        .post("/api/blogs")
+        .set("Authorization" , token)
+        .send(blogToTest)
+        .expect(200)
+
+})
+test("adding a blog with a user adds the blog to the user too", async()=>{
     const blog=
         {
             title:"user-blog-test",
